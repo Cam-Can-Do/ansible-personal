@@ -1,0 +1,57 @@
+---
+- hosts: localhost
+  become: yes
+  vars:
+    window_manager:
+      - python3
+      - i3
+      - i3status
+      - i3lock
+      - dmenu
+      - alacritty
+      - rofi
+      - redshift
+      - feh
+      - thunar
+      - jq
+      - flameshot
+
+    general_packages:
+      - curl
+      - wget
+      - unzip
+      - zip
+      - jq
+      - tree
+      - htop
+      - nmap
+      - net-tools
+      - iputils-ping
+      - dnsutils
+      - clamav
+    dev_packages:
+      - vim
+      - python3
+      - python3-pip
+      - python3-venv
+      - git
+      - tmux
+      - docker
+      - docker-compose
+      - nodejs
+      - npm
+      # vscode
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      become: yes
+
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+      become: yes
+...
