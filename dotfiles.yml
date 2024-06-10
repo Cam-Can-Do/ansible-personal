@@ -27,4 +27,4 @@
           {{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}
         item:
           src: "{{ dotfiles_dir }}/{{ item }}"
-          dest: "{{ ansible_env.HOME }}/.config/{{ item }}"
+          dest: "~/.config/{{ item }}"
