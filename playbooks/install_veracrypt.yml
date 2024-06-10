@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: Check if VeraCrypt is installed
-      command: veracrypt --version
+      command: dpkg -s veracrypt
       register: veracrypt_check
       failed_when: veracrypt_check.rc not in [0, 1]
       changed_when: false
@@ -11,15 +11,15 @@
       meta: end_play
       when: veracrypt_check.rc == 0
 
-    - name: Download VeraCrypt .tar.bz2 package
+    - name: Download VeraCrypt .deb package
       get_url:
-        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2"
-        dest: "/tmp/veracrypt.tar.bz2"
+        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-Debian-12-amd64.deb"
+        dest: "/tmp/veracrypt.deb"
 
     - name: Download VeraCrypt PGP signature
       get_url:
-        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2.sig"
-        dest: "/tmp/veracrypt.tar.bz2.sig"
+        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-Debian-12-amd64.deb.sig"
+        dest: "/tmp/veracrypt.deb.sig"
 
     - name: Download VeraCrypt public key
       get_url:
@@ -30,16 +30,22 @@
       shell: gpg --import /tmp/veracrypt_public_key.asc
 
     - name: Verify PGP signature
-      shell: gpg --verify /tmp/veracrypt.tar.bz2.sig /tmp/veracrypt.tar.bz2
+      shell: gpg --verify /tmp/veracrypt.deb.sig /tmp/veracrypt.deb
       ignore_errors: yes
       register: gpg_verify
       failed_when: "'Good signature' not in gpg_verify.stdout"
 
-    - name: Extract VeraCrypt package
-      unarchive:
-        src: "/tmp/veracrypt.tar.bz2"
-        dest: "/tmp"
-        remote_src: yes
+    - name: Download SHA512 sum file
+      get_url:
+        url: "https://launchpadlibrarian.net/730970179/veracrypt-1.26.7-sha512sum.txt"
+        dest: "/tmp/veracrypt.sha512sum.txt"
+
+
+    - name: Verify SHA512 sum
+      shell: echo "{{ veracrypt_sha512.stdout }}  /tmp/veracrypt.deb" | sha512sum -c -
+      ignore_errors: yes
+      register: sha512_check
+      failed_when: "'OK' not in sha512_check.stdout"
 
     - name: Install VeraCrypt
-      command: bash /tmp/veracrypt-1.26.7-setup-gui-x64
+      command: dpkg -i /tmp/veracrypt.deb
