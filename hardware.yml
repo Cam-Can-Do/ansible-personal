@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Add graphics-drivers PPA
+      apt_repository:
+        repo: ppa:graphics-drivers/ppa
+        state: present
+
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+
+    - name: Install NVIDIA drivers
+      apt:
+        name: nvidia-driver-470
+        state: present
+
+...

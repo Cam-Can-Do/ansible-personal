@@ -57,5 +57,5 @@
         groups: libvirt
         append: yes 
 
-    - include_tasks: playbooks/install_vscode.yml    
+    - include_tasks: playbooks/vscode.yml    
 ...

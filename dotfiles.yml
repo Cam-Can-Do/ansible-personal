@@ -1,0 +1,7 @@
+---
+- hosts: all
+  name: Install my dotfiles.
+  tasks:
+    - name: Clone dotfiles repository
+      git:
+        repo: https://github.com/Cam-Can-Do/dotfiles

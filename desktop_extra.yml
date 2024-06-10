@@ -1,31 +1,10 @@
 ---
 - hosts: all
   vars:
-    desktop:
-      - python3
-      - curl
-
-      - i3
-      - i3status
-      - i3lock
-      - picom
-      - jq
-
-      - feh
-
-      - dmenu
-      - rofi
-
-      - redshift
-
-      - timeshift
-
-      - ximput
-      - flameshot
-      - alacritty
-
-      - chromium
-      - firefox
+    desktop_extra:
+      - inkscape
+      - gimp
+      - 
 
   roles:
     - role: package_installer

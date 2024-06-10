@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - name: Check if Discord is installed
+      command: dpkg -s discord
+      register: discord_check
+      failed_when: discord_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: Install Discord
+      block:
+        - name: Download Discord .deb package
+          get_url:
+            url: https://discordapp.com/api/download?platform=linux&format=deb
+            dest: /tmp/discord.deb
+
+        - name: Install Discord
+          apt:
+            deb: /tmp/discord.deb
+      when: discord_check.rc == 1
+      become: yes
+...
