@@ -1,0 +1,88 @@
+---
+- hosts: all
+  vars:
+    packages:
+      - python3
+      - curl
+
+      - i3
+      - i3status
+      - i3lock
+      - jq
+
+      - feh
+
+      - dmenu
+      - rofi
+
+      - redshift
+
+      - flameshot
+      - alacritty
+
+      - chromium
+      - firefox
+
+  tasks:
+    - name: Install window manager packages
+      become: yes
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ window_manager }}"
+
+    - name: Install VeraCrypt
+    
+
+    - name: Install Thunar with reccommended packages
+      become: yes
+      apt:
+        name: thunar
+        state: present
+        install_recommends: yes
+
+    - name: Check if Brave Browser is installed
+      command: dpkg -s brave-browser
+      register: brave_check
+      failed_when: brave_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: Install Brave Browser
+      block:
+        - name: Download Brave Browser GPG key
+          get_url:
+            url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+            dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+            mode: '0644'
+
+        - name: Add Brave Browser repository
+          apt_repository:
+            repo: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main
+            state: present
+            update_cache: yes
+
+        - name: Install Brave Browser
+          apt:
+            name: brave-browser
+            state: present
+      when: brave_check.rc == 1
+      become: yes
+
+    - name: Check if Discord is installed
+      command: dpkg -s discord
+      register: discord_check
+      failed_when: discord_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: Install Discord
+      block:
+        - name: Download Discord .deb package
+          get_url:
+            url: https://discordapp.com/api/download?platform=linux&format=deb
+            dest: /tmp/discord.deb
+
+        - name: Install Discord
+          apt:
+            deb: /tmp/discord.deb
+      when: discord_check.rc == 1
+      become: yes

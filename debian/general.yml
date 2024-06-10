@@ -1,0 +1,28 @@
+---
+- hosts: all
+  vars: 
+    general:
+      - curl
+      - wget
+      - unzip
+      - zip
+      - jq
+      - tree
+      - htop
+      - nmap
+      - net-tools
+      - iputils-ping
+      - dnsutils
+      - clamav
+
+      - noto-fonts
+      - noto-fonts-emoji
+      - noto-fonts-cjk
+      - noto-fonts-extra
+
+      
+
+  roles:
+    - role: package_installer
+      vars:
+        packages: "{{ general }}"
