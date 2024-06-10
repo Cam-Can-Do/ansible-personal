@@ -29,11 +29,13 @@
       - tmux
 
       # Containerization
-      - docker
+      - docker.io
       - docker-compose
 
       # Virtualization
-      - virtualbox
+      
+      # TODO: Not in default repos
+      #- virtualbox
 
       - qemu-kvm
       - libvirt-daemon-system
@@ -51,27 +53,9 @@
     - name: Add user to libvirt group
       become: yes
       user:
-        name: "{{ ansible_user }}"
+        name: "{{ lookup('env', 'USER') }}"
         groups: libvirt
         append: yes 
 
-    - name: Check if VSCode is installed
-      command: dpkg -s code
-      register: vscode_check
-      failed_when: vscode_check.rc not in [0, 1]
-      changed_when: false
-    
-    - name: Install VSCode
-      block:
-        - name: Download VSCode .deb package
-          get_url:
-            url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-            dest: /tmp/code.deb
-            mode: '0644'
-        
-        - name: Install VSCode
-          apt:
-            deb: /tmp/code.deb
-      when: vscode_check.rc == 1
-      become: yes
+    - include_tasks: playbooks/install_vscode.yml    
 ...
