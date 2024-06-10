@@ -15,7 +15,7 @@
   set_fact:
     vscode_sha256: "{{ vscode_json.content | from_json | json_query('products[?platform.os==`linux-deb-x64`].sha256hash | [0]') }}"
 
-- name: Print SHA256 checksum
+- name: Print Server's SHA256 checksum
   debug:
     msg: "SHA256: {{ vscode_sha256 }}"
 
@@ -25,6 +25,15 @@
     dest: "/tmp/code.deb"
     checksum: "sha256:{{ vscode_sha256 }}"
   when: vscode_check.rc == 1
+
+- name: Calculate checksum of downloaded file
+  command: sha256sum /tmp/code.deb
+  register: calculated_checksum
+  changed_when: false
+
+- name: Print calculated checksum
+  debug:
+    msg: "Calculated checksum: {{ calculated_checksum.stdout.split()[0] }}"
 
 - name: Install VSCode
   apt:
