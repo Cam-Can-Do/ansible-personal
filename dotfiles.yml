@@ -15,9 +15,16 @@
         path: "~/.config"
         state: directory
 
-    - name: Copy dotfiles to ~/.config
-      copy:
-        src: "{{ dotfiles_dir }}/{{ item }}"
-        dest: "~/.config/{{ item }}"
-        force: yes
-      loop: "{{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}"
+    - name: Find files and directories in dotfiles_dir
+      find:
+        paths: "{{ dotfiles_dir }}"
+        file_type: any
+      register: dotfiles
+
+    - name: Synchronize dotfiles to ~/.config
+      synchronize:
+        src: "{{ item.path }}"
+        dest: "~/.config"
+        delete: yes
+        recursive: yes
+      loop: "{{ dotfiles.files }}"
