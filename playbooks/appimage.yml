@@ -18,17 +18,16 @@
         line: "export PATH=$PATH:{{ appimage_dir }}"
       register: path
 
-    - name: Download and install AppImages
-      block:
-        - name: Check if AppImage is already downloaded
-          stat:
-            path: "{{ appimage_dir }}/{{ item.name }}"
-          register: appimage
+    - name: Check if AppImage is already downloaded
+      stat:
+        path: "{{ appimage_dir }}/{{ item.name }}"
+      register: appimage
+      loop: "{{ appimages }}"
 
-        - name: Download AppImage
-          get_url:
-            url: "{{ item.url }}"
-            dest: "{{ appimage_dir }}/{{ item.name }}"
-            mode: '0755'
-          when: not appimage.stat.exists
+    - name: Download AppImage
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ appimage_dir }}/{{ item.name }}"
+        mode: '0755'
+      when: not appimage.stat.exists
       loop: "{{ appimages }}"
