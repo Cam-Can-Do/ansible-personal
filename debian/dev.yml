@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars:
-    packages:
+    dev:
       # Editors
       - vim
       
@@ -45,7 +45,7 @@
   roles:
     - role: package_installer
       vars:
-        packages: "{{ packages }}"
+        packages: "{{ dev }}"
 
   tasks:
     - name: Add user to libvirt group

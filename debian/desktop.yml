@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars:
-    packages:
+    desktop:
       - python3
       - curl
 
@@ -23,15 +23,12 @@
       - chromium
       - firefox
 
-  tasks:
-    - name: Install window manager packages
-      become: yes
-      apt:
-        name: "{{ item }}"
-        state: present
-      with_items: "{{ window_manager }}"
+  roles:
+    - role: package_installer
+      vars:
+        packages: "{{ dev }}"
 
-
+  tasks: 
     - name: Install Thunar with reccommended packages
       become: yes
       apt:
