@@ -1,12 +1,15 @@
 ---
 - hosts: all
   tasks:
-    # install_vscode.yml
     - name: Check if VSCode is installed
       command: dpkg -s code
       register: vscode_check
       failed_when: vscode_check.rc not in [0, 1]
       changed_when: false
+
+    - name: End play if already installed
+      meta: end_play
+      when: vscode_check.rc == 0
 
     - name: Fetch JSON object
       uri:
@@ -27,7 +30,6 @@
         url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
         dest: "/tmp/code.deb"
         checksum: "sha256:{{ vscode_sha256 }}"
-      when: vscode_check.rc == 1
 
     - name: Calculate checksum of downloaded file
       command: sha256sum /tmp/code.deb
@@ -41,4 +43,3 @@
     - name: Install VSCode
       apt:
         deb: "/tmp/code.deb"
-      when: vscode_check.rc == 1
