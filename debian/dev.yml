@@ -45,7 +45,7 @@
   roles:
     - role: package_installer
       vars:
-        packages: "{{ general }}"
+        packages: "{{ packages }}"
 
   tasks:
     - name: Add user to libvirt group
