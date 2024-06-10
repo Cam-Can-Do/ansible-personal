@@ -36,9 +36,6 @@
       failed_when: "'Good signature' not in gpg_verify.stdout"
 
     - name: Install VeraCrypt
-      command: dpkg -i /tmp/veracrypt.deb
-      ignore_errors: true
-
-    - name: Install dependencies
-      command: apt-get install -f
+      apt:
+        deb: "/tmp/veracrypt.deb"
       become: yes
