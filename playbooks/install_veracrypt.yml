@@ -1,0 +1,45 @@
+---
+- hosts: all
+  tasks:
+    - name: Check if VeraCrypt is installed
+      command: veracrypt --version
+      register: veracrypt_check
+      failed_when: veracrypt_check.rc not in [0, 1]
+      changed_when: false
+
+    - name: End play if VeraCrypt is already installed
+      meta: end_play
+      when: veracrypt_check.rc == 0
+
+    - name: Download VeraCrypt .tar.bz2 package
+      get_url:
+        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2"
+        dest: "/tmp/veracrypt.tar.bz2"
+
+    - name: Download VeraCrypt PGP signature
+      get_url:
+        url: "https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2.sig"
+        dest: "/tmp/veracrypt.tar.bz2.sig"
+
+    - name: Download VeraCrypt public key
+      get_url:
+        url: "https://www.idrix.fr/VeraCrypt/VeraCrypt_PGP_public_key.asc"
+        dest: "/tmp/veracrypt_public_key.asc"
+
+    - name: Import VeraCrypt public key
+      shell: gpg --import /tmp/veracrypt_public_key.asc
+
+    - name: Verify PGP signature
+      shell: gpg --verify /tmp/veracrypt.tar.bz2.sig /tmp/veracrypt.tar.bz2
+      ignore_errors: yes
+      register: gpg_verify
+      failed_when: "'Good signature' not in gpg_verify.stdout"
+
+    - name: Extract VeraCrypt package
+      unarchive:
+        src: "/tmp/veracrypt.tar.bz2"
+        dest: "/tmp"
+        remote_src: yes
+
+    - name: Install VeraCrypt
+      command: bash /tmp/veracrypt-1.26.7-setup-gui-x64
