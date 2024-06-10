@@ -16,15 +16,8 @@
         state: directory
 
     - name: Copy dotfiles to ~/.config
-      command: >
-        /usr/bin/rsync -a --delete "{{ item.src }}/" "{{ item.dest }}/"
-      with_items: >
-        {{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}
-      loop_control:
-        loop_var: item
-      vars:
-        items: >
-          {{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}
-        item:
-          src: "{{ dotfiles_dir }}/{{ item }}"
-          dest: "~/.config/{{ item }}"
+      copy:
+        src: "{{ dotfiles_dir }}/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.config/{{ item }}"
+        force: yes
+      loop: "{{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}"
