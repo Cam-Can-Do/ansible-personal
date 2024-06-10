@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Ensure python3-venv is installed
+      apt:
+        name: python3-venv
+        state: present
+      become: yes
+
+    - name: Create a virtual environment
+      command:
+        cmd: python3 -m venv ./venv/i3_scipts
+        creates: ./venv/i3_scripts
+
+    - name: Install packages
+      pip:
+        name: 
+          - i3ipc
+        virtualenv: ./venv/i3_scripts
+      
+    - name: Ensure ~/.config/i3 directory exists
+      file:
+        path: "~/.config/i3"
+        state: directory
+
+    - name: Ensure scripts are executable
+      file:
+        path: "~/.config/i3/scripts"
+        mode: u+x
+        state: directory
+        recurse: yes

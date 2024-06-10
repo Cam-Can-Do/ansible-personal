@@ -4,22 +4,9 @@
     desktop_extra:
       - inkscape
       - gimp
-      - 
 
   roles:
     - role: package_installer
       vars:
         packages: "{{ dev }}"
-
-  tasks: 
-    - name: Install Thunar with all reccommended packages
-      become: yes
-      apt:
-        name: thunar
-        state: present
-        install_recommends: yes
-
-    - include_tasks: playbooks/vscode.yml
-    - include_tasks: playbooks/discord.yml
-
 ...
