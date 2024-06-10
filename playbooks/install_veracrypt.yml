@@ -35,17 +35,10 @@
       register: gpg_verify
       failed_when: "'Good signature' not in gpg_verify.stdout"
 
-    - name: Download SHA512 sum file
-      get_url:
-        url: "https://launchpadlibrarian.net/730970179/veracrypt-1.26.7-sha512sum.txt"
-        dest: "/tmp/veracrypt.sha512sum.txt"
-
-
-    - name: Verify SHA512 sum
-      shell: echo "{{ veracrypt_sha512.stdout }}  /tmp/veracrypt.deb" | sha512sum -c -
-      ignore_errors: yes
-      register: sha512_check
-      failed_when: "'OK' not in sha512_check.stdout"
-
     - name: Install VeraCrypt
       command: dpkg -i /tmp/veracrypt.deb
+      ignore_errors: true
+
+    - name: Install dependencies
+      command: apt-get install -f
+      become: yes
