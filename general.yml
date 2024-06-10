@@ -16,10 +16,7 @@
       - dnsutils
       - clamav
 
-      - noto-fonts
-      - noto-fonts-emoji
-      - noto-fonts-cjk
-      - noto-fonts-extra
+      - fonts-noto
 
   roles:
     - role: package_installer
