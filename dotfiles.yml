@@ -2,24 +2,27 @@
 - hosts: all
   name: Install my dotfiles.
   vars:
-    dotfiles_dir: "{{ ansible_env.HOME }}/dotfiles"  # Specify the directory to clone the dotfiles repository
+    dotfiles_repo: https://github.com/Cam-Can-Do/dotfiles
+    dotfiles_dir: "{{ ansible_env.HOME }}/dotfiles_repo"
   tasks:
     - name: Clone dotfiles repository
       git:
-        repo: https://github.com/Cam-Can-Do/dotfiles
+        repo: "{{ dotfiles_repo }}"
         dest: "{{ dotfiles_dir }}"
-      register: git_clone_result
 
     - name: Ensure ~/.config directory exists
       file:
         path: "{{ ansible_env.HOME }}/.config"
         state: directory
 
+    - name: Ensure rsync is installed
+      package:
+        name: rsync
+        state: present
+
     - name: Copy dotfiles to ~/.config
-      command: /bin/cp -r "{{ item.src }}" "{{ item.dest }}"
+      command: /usr/bin/rsync -a --delete "{{ item.src }}/" "{{ item.dest }}/"
       with_items: "{{ lookup('fileglob', dotfiles_dir + '/*', wantlist=True) | map('basename') | list }}"
-      args:
-        removes: "{{ item.dest }}"
       vars:
         src: "{{ dotfiles_dir }}/{{ item }}"
         dest: "{{ ansible_env.HOME }}/.config/{{ item }}"

@@ -21,9 +21,8 @@
       - noto-fonts-cjk
       - noto-fonts-extra
 
-      
-
   roles:
     - role: package_installer
       vars:
         packages: "{{ general }}"
+...
