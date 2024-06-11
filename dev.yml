@@ -15,7 +15,7 @@
       - python3-pip
       - python3-venv
 
-      - nodejs
+      #- nodejs
       - npm
       
       # Build tools
@@ -57,5 +57,5 @@
         groups: libvirt
         append: yes 
 
-    - include_tasks: playbooks/vscode.yml    
+- import_playbook: playbooks/vscode.yml    
 ...
