@@ -4,6 +4,7 @@
   vars:
     dotfiles_repo: https://github.com/Cam-Can-Do/dotfiles
     dotfiles_dir: "./dotfiles_repo"
+    user_home: "/home/{{ ansible_env.SUDO_USER }}"
   tasks:
     - name: Clone dotfiles repository
       git:
@@ -12,7 +13,7 @@
 
     - name: Ensure ~/.config directory exists
       file:
-        path: "{{ ansible_env.HOME }}/.config"
+        path: "{{ user_home }}/.config"
         state: directory
 
     - name: Find files and directories in dotfiles_dir
@@ -24,9 +25,7 @@
     - name: Synchronize dotfiles to ~/.config
       synchronize:
         src: "{{ item.path }}"
-        dest: "{{ ansible_env.HOME }}/.config"
+        dest: "{{ user_home }}/.config"
         delete: yes
         recursive: yes
       loop: "{{ dotfiles.files }}"
-
-#- import_playbook: setup_i3_scripts.yml
