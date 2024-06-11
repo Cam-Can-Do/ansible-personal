@@ -29,4 +29,4 @@
         recursive: yes
       loop: "{{ dotfiles.files }}"
 
-- import_playbook: setup_i3_scripts.yml
+#- import_playbook: setup_i3_scripts.yml

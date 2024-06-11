@@ -17,9 +17,15 @@
         cmd: python3 -m venv ../venv/i3_scripts
         creates: ../venv/i3_scripts
 
+    - name: Check if virtual environment exists
+      stat:
+        path: ../venv/i3_scripts
+      register: venv
+
     - name: Install packages
       command:
         cmd: ../venv/i3_scripts/bin/pip install i3ipc
+      when: venv.stat.exists
       
     - name: Ensure ~/.config/i3 directory exists
       file:
