@@ -7,9 +7,14 @@
         state: present
       become: yes
 
+    - name: Ensure the i3 scripts directory exists
+      file:
+        path: "./venv/i3_scripts"
+        state: directory
+
     - name: Create a virtual environment
       command:
-        cmd: python3 -m venv ./venv/i3_scipts
+        cmd: python3 -m venv ./venv/i3_scripts
         creates: ./venv/i3_scripts
 
     - name: Install packages
