@@ -44,8 +44,8 @@
         state: present
         install_recommends: yes
 
-  - import_playbook: playbooks/vscode.yml
-  - import_playbook: playbooks/discord.yml
-  - import_playbook: playbooks/dotfiles.yml
+- import_playbook: playbooks/vscode.yml
+- import_playbook: playbooks/discord.yml
+- import_playbook: playbooks/dotfiles.yml
 
 ...
