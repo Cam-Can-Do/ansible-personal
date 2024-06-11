@@ -9,17 +9,17 @@
 
     - name: Ensure the i3 scripts directory exists
       file:
-        path: "./venv/i3_scripts"
+        path: "../venv/i3_scripts"
         state: directory
 
     - name: Create a virtual environment
       command:
-        cmd: python3 -m venv ./venv/i3_scripts
-        creates: ./venv/i3_scripts
+        cmd: python3 -m venv ../venv/i3_scripts
+        creates: ../venv/i3_scripts
 
     - name: Install packages
       command:
-        cmd: ./venv/i3_scripts/bin/pip install i3ipc
+        cmd: ../venv/i3_scripts/bin/pip install i3ipc
       
     - name: Ensure ~/.config/i3 directory exists
       file:
