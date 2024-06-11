@@ -34,7 +34,7 @@
   roles:
     - role: package_installer
       vars:
-        packages: "{{ dev }}"
+        packages: "{{ desktop }}"
 
   tasks: 
     - name: Install Thunar with all reccommended packages

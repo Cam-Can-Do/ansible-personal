@@ -8,5 +8,5 @@
   roles:
     - role: package_installer
       vars:
-        packages: "{{ dev }}"
+        packages: "{{ desktop_extra }}"
 ...
