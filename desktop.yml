@@ -24,12 +24,11 @@
 
       - timeshift
 
-      - ximput
       - flameshot
       - alacritty
 
       - chromium
-      - firefox
+      #- firefox # Not in repo
 
   roles:
     - role: package_installer
