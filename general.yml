@@ -15,6 +15,7 @@
       - iputils-ping
       - dnsutils
       - clamav
+      - neofetch
 
       - fonts-noto
 
