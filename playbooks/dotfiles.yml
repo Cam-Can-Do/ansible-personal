@@ -1,31 +1,34 @@
 ---
-- hosts: all
-  name: Install my dotfiles.
-  vars:
-    dotfiles_repo: https://github.com/Cam-Can-Do/dotfiles
-    dotfiles_dir: "./dotfiles_repo"
-    user_home: "/home/{{ ansible_env.SUDO_USER }}"
+- name: Clone a GitHub repository and copy contents to ~/.config
+  hosts: localhost
+  gather_facts: yes
   tasks:
-    - name: Clone dotfiles repository
-      git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_dir }}"
+    - name: Install git if not present
+      apt:
+        name: git
+        state: present
+      become: yes
 
-    - name: Ensure ~/.config directory exists
+    - name: Ensure the ~/.config directory exists
       file:
-        path: "{{ user_home }}/.config"
+        path: "{{ ansible_env.HOME }}/.config"
         state: directory
+        mode: '0755'
 
-    - name: Find files and directories in dotfiles_dir
-      find:
-        paths: "{{ dotfiles_dir }}"
-        file_type: any
-      register: dotfiles
+    - name: Clone the GitHub repository
+      git:
+        #repo: 'https://github.com/Cam-Can-Do/dotfiles.git'
+        repo: 'https://github.com/typecraft-dev/dotfiles.git'
+        dest: '/tmp/cloned-dotfiles
 
-    - name: Synchronize dotfiles to ~/.config
+    - name: Copy the contents to ~/.config
       synchronize:
-        src: "{{ item.path }}"
-        dest: "{{ user_home }}/.config"
-        delete: yes
+        src: '/tmp/cloned-dotfiles/'
+        dest: '{{ ansible_env.HOME }}/.config/'
         recursive: yes
-      loop: "{{ dotfiles.files }}"
+        delete: yes
+
+    - name: Clean up the temporary repository
+      file:
+        path: '/tmp/cloned-dotfiles'
+        state: absent
