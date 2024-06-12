@@ -12,7 +12,6 @@
       - i3status
       - i3lock
       - python3-i3ipc
-      - python3-autotiling
       - picom
       - arandr
       - jq
