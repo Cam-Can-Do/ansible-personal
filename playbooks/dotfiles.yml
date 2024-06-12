@@ -19,16 +19,14 @@
       git:
         #repo: 'https://github.com/Cam-Can-Do/dotfiles.git'
         repo: 'https://github.com/typecraft-dev/dotfiles.git'
-        dest: '/tmp/cloned-dotfiles
+
+        dest: '/tmp/cloned-repo'
 
     - name: Copy the contents to ~/.config
-      synchronize:
-        src: '/tmp/cloned-dotfiles/'
-        dest: '{{ ansible_env.HOME }}/.config/'
-        recursive: yes
-        delete: yes
+      command: >
+        rsync -av --delete /tmp/cloned-repo/ {{ ansible_env.HOME }}/.config/
 
     - name: Clean up the temporary repository
       file:
-        path: '/tmp/cloned-dotfiles'
+        path: '/tmp/cloned-repo'
         state: absent
