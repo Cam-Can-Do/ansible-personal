@@ -2,8 +2,6 @@
 - hosts: all
   vars: 
     general:
-      - libreoffice
-
       - curl
       - wget
       - unzip
@@ -19,8 +17,10 @@
 
       - fonts-noto
 
-  roles:
-    - role: package_installer
-      vars:
-        packages: "{{ general }}"
+  tasks:
+    - name: Install packages
+      become: yes
+      apt:
+        name: "{{ general }}"
+        state: present
 ...

@@ -4,13 +4,10 @@
   vars:
     dotfiles_repo: "https://github.com/Cam-Can-Do/dotfiles"
     dotfiles_dir: "~/dotfiles"
-    user_home: "/home/{{ ansible_env.SUDO_USER }}"
   tasks:
     - name: Clone dotfiles repository
       shell: |
         git clone {{ dotfiles_repo }} {{ dotfiles_dir }}
         cd {{ dotfiles_dir }}
-        stow -t {{ user_home }} .
-        chmod +x {{ user_home }}/.config/i3/scripts/*
-      become: yes
-      become_user: "{{ ansible_env.SUDO_USER }}"
+        stow .
+        chmod +x ~/.config/i3/scripts/*

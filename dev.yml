@@ -34,22 +34,23 @@
 
       # Virtualization
       
-      # TODO: Not in default repos
+      # TODO: Not in default repos (maybe better for desktop_extra.yml)
       #- virtualbox
 
+      # QEMU/KVM/Virt-Manager 
       - qemu-kvm
       - libvirt-daemon-system
       - libvirt-clients
       - bridge-utils
       - virt-manager
 
-
-  roles:
-    - role: package_installer
-      vars:
-        packages: "{{ dev }}"
-
   tasks:
+    - name: Install packages
+      become: yes
+      apt:
+        name: "{{ dev }}"
+        state: present
+
     - name: Add user to libvirt group
       become: yes
       user:

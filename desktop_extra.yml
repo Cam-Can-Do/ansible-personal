@@ -4,9 +4,12 @@
     desktop_extra:
       - inkscape
       - gimp
+      - libreoffice
 
-  roles:
-    - role: package_installer
-      vars:
-        packages: "{{ desktop_extra }}"
+  tasks:
+    - name: Install packages
+      become: yes
+      apt:
+        name: "{{ desktop_extra }}"
+        state: present
 ...
