@@ -2,30 +2,15 @@
 - hosts: all
   name: Install my dotfiles.
   vars:
-    dotfiles_repo: https://github.com/Cam-Can-Do/dotfiles
-    dotfiles_dir: "./dotfiles_repo"
+    dotfiles_repo: "https://github.com/Cam-Can-Do/dotfiles"
+    dotfiles_dir: "~/dotfiles"
     user_home: "/home/{{ ansible_env.SUDO_USER }}"
   tasks:
     - name: Clone dotfiles repository
-      git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_dir }}"
-
-    - name: Ensure ~/.config directory exists
-      file:
-        path: "{{ user_home }}/.config"
-        state: directory
-
-    - name: Find files and directories in dotfiles_dir
-      find:
-        paths: "{{ dotfiles_dir }}"
-        file_type: any
-      register: dotfiles
-
-    - name: Synchronize dotfiles to ~/.config
-      synchronize:
-        src: "{{ item.path }}"
-        dest: "{{ user_home }}/.config"
-        delete: yes
-        recursive: yes
-      loop: "{{ dotfiles.files }}"
+      shell: |
+        git clone {{ dotfiles_repo }} {{ dotfiles_dir }}
+        cd {{ dotfiles_dir }}
+        stow -t {{ user_home }} .
+        chmod +x {{ user_home }}/.config/i3/scripts/*
+      become: yes
+      become_user: "{{ ansible_env.SUDO_USER }}"
