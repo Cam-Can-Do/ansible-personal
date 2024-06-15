@@ -3,7 +3,7 @@ This repo is used to install and configure a Debian-based Linux system to match 
 
 ## Usage
 
-`curl -sL https://raw.githubusercontent.com/Cam-Can-Do/your-repo/main/install.sh | sh`
+`curl -sL https://raw.githubusercontent.com/Cam-Can-Do/ansible-personal/main/install.sh | sh`
 
 *or*
 
