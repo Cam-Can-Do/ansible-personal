@@ -8,6 +8,7 @@
       - python3-venv
       - python3-pip
 
+      - stow
       - curl
 
       - i3
@@ -30,8 +31,8 @@
       - flameshot
       - alacritty
 
-      - chromium-browser
-      - firefox
+      #- chromium-browser
+      #- firefox
 
   tasks: 
     - name: Install packages
@@ -47,10 +48,10 @@
         state: present
         install_recommends: yes
 
+- import_playbook: playbooks/dotfiles.yml
 - import_playbook: playbooks/brave.yml
 - import_playbook: playbooks/veracrypt.yml
 - import_playbook: playbooks/vscode.yml
 - import_playbook: playbooks/discord.yml
-- import_playbook: playbooks/dotfiles.yml
 
 ...
