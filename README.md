@@ -1,12 +1,19 @@
 # Personal System Bootstrap
-This repo is used to install and configure a vanilla Debian-based Linux system to match my exact daily driver configuration.
+This repo is used to install and configure a Debian-based Linux system to match my daily driver configuration.
 
 ## Usage
+
+`curl -sL https://raw.githubusercontent.com/Cam-Can-Do/your-repo/main/install.sh | sh`
+
+*or*
+
 ```bash
-apt-get install ansible
+mkdir ansible-setup && cd ansible-setup
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install ansible-core -y
 git clone https://github.com/Cam-Can-Do/ansible-personal
-cd ansible-personal
-ansible-playbook -i hosts.ini main.yml
+ansible-playbook -i hosts.ini main.yml -K
 ```
 
 Inspired by: https://github.com/ThePrimeagen/dev
