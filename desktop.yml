@@ -48,6 +48,10 @@
         state: present
         install_recommends: yes
 
+    - name: Set Thunar as default file manager
+      become: yes
+      command: xdg-mime default thunar.desktop inode/directory
+
 - import_playbook: playbooks/dotfiles.yml
 - import_playbook: playbooks/brave.yml
 - import_playbook: playbooks/veracrypt.yml

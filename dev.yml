@@ -44,6 +44,14 @@
       - bridge-utils
       - virt-manager
 
+      # Reports
+      - texlive-latex-recommended
+      - texlive-fonts-extra
+      - texlive-latex-extra 
+      - pandoc
+      - p7zip-full
+
+
   tasks:
     - name: Install packages
       become: yes
@@ -51,12 +59,6 @@
         name: "{{ dev }}"
         state: present
 
-    - name: Add user to libvirt group
-      become: yes
-      user:
-        name: "{{ lookup('env', 'USER') }}"
-        groups: libvirt
-        append: yes 
 
-- import_playbook: playbooks/vscode.yml    
+#- import_playbook: playbooks/vscode.yml    
 ...
