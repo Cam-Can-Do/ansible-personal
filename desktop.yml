@@ -29,7 +29,7 @@
       - timeshift
 
       - flameshot
-      - alacritty
+      - kitty
 
       #- chromium-browser
       #- firefox
