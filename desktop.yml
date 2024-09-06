@@ -18,6 +18,12 @@
       - picom
       - arandr
       - jq
+      
+      # For mouse sensitivity settings in dotfiles
+      - xinput
+
+      # Manage GTK Themes
+      - lxappearance      
 
       - feh
 
@@ -30,6 +36,8 @@
 
       - flameshot
       - kitty
+
+      - mpv
 
       #- chromium-browser
       #- firefox
