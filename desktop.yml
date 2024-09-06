@@ -52,9 +52,9 @@
       become: yes
       command: xdg-mime default thunar.desktop inode/directory
 
-    - name: Install fonts
-      become: yes
-      shell: chmod +x ./scripts/* && ./scripts/install_fonts.sh
+    #- name: Install fonts
+    #  become: yes
+    #  shell: chmod +x ./scripts/* && ./scripts/install_fonts.sh
 
 - import_playbook: playbooks/dotfiles.yml
 - import_playbook: playbooks/brave.yml

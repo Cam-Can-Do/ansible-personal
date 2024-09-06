@@ -2,6 +2,8 @@
 # Author: @donovan on GitHub
 # https://gist.github.com/matthewjberger/7dd7e079f282f8138a9dc3b045ebefa0?permalink_comment_id=4005789#gistcomment-4005789
 
+set -e
+
 declare -a fonts=(
     BitstreamVeraSansMono
     CodeNewRoman
@@ -35,7 +37,7 @@ for font in "${fonts[@]}"; do
     download_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/${zip_file}"
     echo "Downloading $download_url"
     wget "$download_url"
-    unzip "$zip_file" -d "$fonts_dir"
+    unzip -n "$zip_file" -d "$fonts_dir"
     rm "$zip_file"
 done
 
