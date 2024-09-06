@@ -24,7 +24,6 @@
 
       # Manage GTK Themes
       - lxappearance      
-
       - feh
 
       - dmenu
