@@ -10,4 +10,3 @@
         git clone {{ dotfiles_repo }} {{ dotfiles_dir }}
         cd {{ dotfiles_dir }}
         stow .
-        chmod +x ~/.config/i3/scripts/*

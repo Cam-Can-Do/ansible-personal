@@ -54,7 +54,7 @@
 
     - name: Install fonts
       become: yes
-      shell: ./scripts/install_fonts.sh
+      shell: chmod +x ./scripts/* && ./scripts/install_fonts.sh
 
 - import_playbook: playbooks/dotfiles.yml
 - import_playbook: playbooks/brave.yml
