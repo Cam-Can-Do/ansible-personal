@@ -1,5 +1,5 @@
 - name: Install and configure Neovim
-  hosts: all
+  hosts: localhost
   vars:
     cmdr_bin_dir: /usr/local/bin
     nvim_config_dir: "{{ lookup('env', 'HOME') }}/.config/nvim"
@@ -8,6 +8,7 @@
     nvim_archive_dest: "/tmp/{{ nvim_archive_name }}"
     nvim_extract_dest: /tmp/nvim-linux64
     nvim_install_path: "{{ cmdr_bin_dir }}/nvim"
+    nvim_binary_path: "/tmp/nvim-linux64/nvim-linux64/bin/nvim"
   tasks:
     - name: Check for Neovim binary
       ansible.builtin.stat:
@@ -43,13 +44,13 @@
         src: "{{ nvim_archive_dest }}"
         remote_src: true
         dest: "{{ nvim_extract_dest }}"
-        creates: "{{ nvim_extract_dest }}/bin/nvim"
+        creates: "{{ nvim_extract_dest }}/nvim-linux64/bin/nvim"
 
     - name: Move Neovim binary to target directory
       become: yes
       when: not nvim_exists.stat.exists
       ansible.builtin.command:
-        cmd: mv "{{ nvim_extract_dest }}/bin/nvim" "{{ nvim_install_path }}"
+        cmd: mv "{{ nvim_binary_path }}" "{{ nvim_install_path }}"
 
     - name: Remove Neovim archive and extraction directory
       become: yes
