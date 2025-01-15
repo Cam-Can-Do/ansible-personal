@@ -8,5 +8,13 @@
     - name: Clone dotfiles repository
       shell: |
         git clone {{ dotfiles_repo }} {{ dotfiles_dir }}
+
+    - name: Ensure GNU Stow installed
+      apt:
+        name: stow
+        state: present
+
+    - name: Stow dotfiles
+      shell: |
         cd {{ dotfiles_dir }}
         stow .
