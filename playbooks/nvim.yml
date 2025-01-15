@@ -1,0 +1,75 @@
+---
+- name: Install and configure Neovim
+  hosts: all
+  vars:
+    cmdr_bin_dir: /usr/local/bin
+    nvim_config_dir: "{{ lookup('env', 'HOME') }}/.config/nvim"
+    nvim_release_url: https://api.github.com/repos/neovim/neovim/releases/latest
+    nvim_archive_dest: /tmp/nvim.tar.gz
+    nvim_extract_dest: /tmp/nvim
+    nvim_install_path: "{{ cmdr_bin_dir }}/nvim"
+  tasks:
+    - name: Check for Neovim binary
+      ansible.builtin.stat:
+        path: "{{ nvim_install_path }}"
+      register: nvim_exists
+
+    - name: Get latest Neovim release info
+      ansible.builtin.uri:
+        url: "{{ nvim_release_url }}"
+        return_content: yes
+        status_code: 200
+        body_format: json
+      register: nvim_release
+
+    - name: Download Neovim binary
+      when: not nvim_exists.stat.exists
+      ansible.builtin.get_url:
+        url: "https://github.com/neovim/neovim/releases/download/{{ nvim_release.json.tag_name }}/nvim-linux64.tar.gz"
+        dest: "{{ nvim_archive_dest }}"
+
+    - name: Extract Neovim archive
+      become: yes
+      when: not nvim_exists.stat.exists
+      ansible.builtin.unarchive:
+        src: "{{ nvim_archive_dest }}"
+        remote_src: true
+        dest: "{{ nvim_extract_dest }}"
+        creates: "{{ nvim_extract_dest }}/bin/nvim"
+
+    - name: Move Neovim binary to target directory
+      become: yes
+      when: not nvim_exists.stat.exists
+      ansible.builtin.command:
+        cmd: mv "{{ nvim_extract_dest }}/bin/nvim" "{{ nvim_install_path }}"
+
+    - name: Remove Neovim archive and extraction directory
+      become: yes
+      when: not nvim_exists.stat.exists
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ nvim_archive_dest }}"
+        - "{{ nvim_extract_dest }}"
+
+    - name: Ensure Neovim config directory exists
+      ansible.builtin.file:
+        path: "{{ nvim_config_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Deploy Neovim init.lua
+      ansible.builtin.copy:
+        src: ./configs/nvim/init.lua
+        dest: "{{ nvim_config_dir }}/init.lua"
+      when: nvim_config_dir is defined
+
+    - name: Deploy additional Neovim configuration files
+      ansible.builtin.copy:
+        src: ./configs/nvim/lua/
+        dest: "{{ nvim_config_dir }}/lua/"
+        remote_src: true
+        mode: '0755'
+      when: nvim_config_dir is defined
+
