@@ -21,4 +21,5 @@
         remote_src: yes
 
     - name: Refresh font cache to enable new font(s)
+      when: hack_exists is failed
       shell: "fc-cache -fv"
