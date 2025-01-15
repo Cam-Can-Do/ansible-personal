@@ -14,7 +14,7 @@
 
 - import_playbook: playbooks/fonts.yml
 - import_playbook: playbooks/dotfiles.yml
-# - import_playbook: playbooks/zellij.yml
+- import_playbook: playbooks/zellij.yml
 
   # TODO: 
   #import_playbook: playbooks/neovim.yml

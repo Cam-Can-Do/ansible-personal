@@ -22,4 +22,5 @@
 
     - name: Refresh font cache to enable new font(s)
       when: hack_exists is failed
+      become: yes
       shell: "fc-cache -fv"
