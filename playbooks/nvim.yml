@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Neovim
-  hosts: all
+  hosts: localhost
   vars:
     cmdr_bin_dir: /usr/local/bin
     nvim_config_dir: "{{ lookup('env', 'HOME') }}/.config/nvim"
@@ -25,8 +25,15 @@
     - name: Download Neovim binary
       when: not nvim_exists.stat.exists
       ansible.builtin.get_url:
-        url: "https://github.com/neovim/neovim/releases/download/{{ nvim_release.json.tag_name }}/nvim-linux64.tar.gz"
+        url: "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
         dest: "{{ nvim_archive_dest }}"
+
+    - name: Ensure extraction directory exists
+      become: yes
+      ansible.builtin.file:
+        path: "{{ nvim_extract_dest }}"
+        state: directory
+        mode: '0755'
 
     - name: Extract Neovim archive
       become: yes
