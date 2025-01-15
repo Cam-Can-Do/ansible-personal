@@ -10,11 +10,12 @@
         git clone {{ dotfiles_repo }} {{ dotfiles_dir }}
 
     - name: Ensure GNU Stow installed
+      become: yes
       apt:
         name: stow
         state: present
 
-    - name: Stow dotfiles
+    - name: Stow dotfiles (overwrites conflicting files)
       shell: |
         cd {{ dotfiles_dir }}
-        stow .
+        stow . --adopt
