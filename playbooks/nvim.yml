@@ -7,7 +7,7 @@
     nvim_release_url: https://api.github.com/repos/neovim/neovim/releases/latest
     nvim_archive_dest: /tmp/nvim.tar.gz
     nvim_extract_dest: /tmp/nvim
-    nvim_install_path: "{{ cmdr_bin_dir }}/nvim"
+    nvim_install_path: "{{ cmdr_bin_dir }}/nvim-linux64"
   tasks:
     - name: Check for Neovim binary
       ansible.builtin.stat:
