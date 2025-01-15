@@ -2,3 +2,5 @@ Packages/programs:
   anki
   Obsidian
   Use fonts script in playbook
+
+  Add xrandr-invert-colors cloning and/or installation: https://github.com/zoltanp/xrandr-invert-colors

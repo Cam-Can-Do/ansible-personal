@@ -1,0 +1,21 @@
+---
+- hosts: all
+  vars:
+    dev_minimal:
+      - kitty
+
+  tasks:
+
+    - name: Install packages
+      become: yes
+      apt:
+        name: "{{ dev_minimal }}"
+        state: present
+
+  import_playbook: playbooks/fonts.yml
+  import_playbook: playbooks/dotfiles.yml
+  import_playbook: playbooks/zellij.yml
+
+  # TODO: 
+  #import_playbook: playbooks/neovim.yml
+
