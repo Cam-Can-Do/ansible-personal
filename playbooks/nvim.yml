@@ -2,7 +2,6 @@
   hosts: localhost
   vars:
     cmdr_bin_dir: /usr/local/bin
-    nvim_config_dir: "{{ lookup('env', 'HOME') }}/.config/nvim"
     nvim_release_url: https://api.github.com/repos/neovim/neovim/releases/latest
     nvim_archive_name: nvim-linux64.tar.gz
     nvim_archive_dest: "/tmp/{{ nvim_archive_name }}"
@@ -62,23 +61,4 @@
         - "{{ nvim_archive_dest }}"
         - "{{ nvim_extract_dest }}"
 
-    - name: Ensure Neovim config directory exists
-      ansible.builtin.file:
-        path: "{{ nvim_config_dir }}"
-        state: directory
-        mode: '0755'
-
-    - name: Deploy Neovim init.lua
-      ansible.builtin.copy:
-        src: ./configs/nvim/init.lua
-        dest: "{{ nvim_config_dir }}/init.lua"
-      when: nvim_config_dir is defined
-
-    - name: Deploy additional Neovim configuration files
-      ansible.builtin.copy:
-        src: ./configs/nvim/lua/
-        dest: "{{ nvim_config_dir }}/lua/"
-        remote_src: true
-        mode: '0755'
-      when: nvim_config_dir is defined
 
