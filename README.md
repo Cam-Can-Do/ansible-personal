@@ -14,7 +14,7 @@ sudo apt-get upgrade -y
 sudo apt-get install ansible-core -y
 git clone https://github.com/Cam-Can-Do/ansible-personal.git
 cd ansible-personal
-ansible-playbook -i hosts.ini main.yml -K
+ansible-playbook -i hosts.ini bare_metal.yml -K
 ```
 
 Inspired by: https://github.com/ThePrimeagen/dev

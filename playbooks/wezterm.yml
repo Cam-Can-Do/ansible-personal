@@ -1,4 +1,5 @@
-name: WezTerm
+---
+- name: WezTerm
   hosts: all
   tasks:
     - name: Download WezTerm
@@ -6,3 +7,5 @@ name: WezTerm
       shell: |
         curl -LO https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
         chmod +x WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
+
+...
