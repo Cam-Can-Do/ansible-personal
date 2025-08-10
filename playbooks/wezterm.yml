@@ -2,10 +2,14 @@
 - name: WezTerm
   hosts: all
   tasks:
-    - name: Download WezTerm
-      become: yes
+    - name: Download WezTerm AppImage to home directory
       shell: |
-        curl -LO https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
-        chmod +x WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
+        curl -Lo ~/WezTerm.AppImage https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
+
+    - name: Make WezTerm AppImage executable
+      file:
+        path: "~/WezTerm.AppImage"
+        mode: '0755'
+        state: file
 
 ...

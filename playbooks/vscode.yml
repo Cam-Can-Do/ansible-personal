@@ -41,5 +41,6 @@
         msg: "Calculated checksum: {{ calculated_checksum.stdout.split()[0] }}"
 
     - name: Install VSCode
+      become: yes
       apt:
         deb: "/tmp/code.deb"
