@@ -6,10 +6,14 @@
       - gimp
       - libreoffice
 
+      - redshift
+      - timeshift
+
   tasks:
     - name: Install packages
       become: yes
       apt:
         name: "{{ desktop_extra }}"
         state: present
+- import_playbook: playbooks/veracrypt.yml
 ...

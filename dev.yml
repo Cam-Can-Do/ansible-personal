@@ -2,41 +2,6 @@
 - hosts: all
   vars:
     dev:
-      # Editors
-      - vim
-      
-      # Version Control
-      - git
-
-      # Interpreters, compilers, runtimes, etc...
-      - gcc
-
-      - python3
-      - python3-pip
-      - python3-venv
-
-      #- nodejs
-      - npm
-      
-      # Build tools
-      - make
-      - cmake
-
-      # Debugging
-      - gdb
-
-      # Environment / workflow
-      - tmux
-
-      # Containerization
-      - docker.io
-      - docker-compose
-
-      # Virtualization
-      
-      # TODO: Not in default repos (maybe better for desktop_extra.yml)
-      #- virtualbox
-
       # QEMU/KVM/Virt-Manager 
       - qemu-kvm
       - libvirt-daemon-system
@@ -61,4 +26,5 @@
 
 
 #- import_playbook: playbooks/vscode.yml    
+- import_playbook: dev_minimal.yml
 ...

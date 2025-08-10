@@ -18,6 +18,7 @@
       - picom
       - arandr
       - jq
+      - xclip
       
       # For mouse sensitivity settings in dotfiles
       - xinput
@@ -29,17 +30,8 @@
       - dmenu
       - rofi
 
-      - redshift
-
-      - timeshift
 
       - flameshot
-      - kitty
-
-      - mpv
-
-      #- chromium-browser
-      #- firefox
 
   tasks: 
     - name: Install packages
@@ -59,14 +51,11 @@
       become: yes
       command: xdg-mime default thunar.desktop inode/directory
 
-    #- name: Install fonts
-    #  become: yes
-    #  shell: chmod +x ./scripts/* && ./scripts/install_fonts.sh
 
 - import_playbook: playbooks/dotfiles.yml
 - import_playbook: playbooks/brave.yml
-- import_playbook: playbooks/veracrypt.yml
+- import_playbook: playbooks/wezterm.yml
 - import_playbook: playbooks/vscode.yml
-- import_playbook: playbooks/discord.yml
+- import_playbook: playbooks/fonts.yml
 
 ...

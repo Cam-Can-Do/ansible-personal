@@ -1,0 +1,14 @@
+---
+- hosts: all
+  name: Install entire system.
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        state: latest
+
+- import_playbook: general.yml
+- import_playbook: dev_minimal.yml
+- import_playbook: desktop.yml
+...

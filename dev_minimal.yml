@@ -2,19 +2,44 @@
 - hosts: all
   vars:
     dev_minimal:
-      - kitty
+      # Editors
+      - vim
+      
+      # Version Control
+      - git
+
+      # Interpreters, compilers, runtimes, etc...
+      - gcc
+
+      - python3
+      - python3-pip
+      - python3-venv
+
+      #- nodejs
+      - npm
+      
+      # Build tools
+      - make
+      - cmake
+
+      # Debugging
+      - gdb
+
+      # Containerization
+      - docker.io
+
+      # Virtualization
+      
+      # TODO: Not in default repos (maybe better for desktop_extra.yml)
+      #- virtualbox
+
 
   tasks:
-
     - name: Install packages
       become: yes
       apt:
         name: "{{ dev_minimal }}"
         state: present
 
-- import_playbook: playbooks/fonts.yml
-- import_playbook: playbooks/dotfiles.yml
-- import_playbook: playbooks/zellij.yml
-- import_playbook: playbooks/nvim.yml
 
-
+...
